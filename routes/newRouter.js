@@ -10,7 +10,7 @@ newRouter.get("/new", (req, res) => {
 newRouter.post("/new", (req, res) => {
   const { author, message } = req.body;
   if (author && message) {
-    messages.push({
+    req.messages.push({
       text: message,
       user: author,
       added: new Date(),

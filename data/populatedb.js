@@ -43,6 +43,7 @@ async function main() {
   } finally {
     await client.end();
     console.log("done");
+    process.exit(0)
   }
 }
 

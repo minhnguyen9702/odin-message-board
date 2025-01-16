@@ -1,10 +1,11 @@
 const { Router } = require("express");
-const messages = require("../data/messages"); 
+const db = require("../data/queries") 
 
 const indexRouter = Router();
 
-indexRouter.get("/", (req, res) => {
-  res.render("index", { messages: req.messages });
+indexRouter.get("/", async (req, res) => {
+  const messages = await db.getAllMessages()
+  res.render("index", { messages: messages });
 });
 
 module.exports = indexRouter;

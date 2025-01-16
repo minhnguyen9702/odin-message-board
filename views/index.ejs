@@ -10,7 +10,7 @@
     <ul>
       <% messages.forEach(function(message) { %>
       <li>
-        <strong><%= message.user %></strong>: <%= message.text %> (added on <%=
+        <strong><%= message.user_name %></strong>: <%= message.text %> (added on <%=
         message.added.toLocaleString() %>)
       </li>
       <% }); %>

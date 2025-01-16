@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const messages = require("../data/messages");
+const db = require("../data/queries");
 
 const newRouter = Router();
 
@@ -7,14 +7,10 @@ newRouter.get("/new", (req, res) => {
   res.render("new");
 });
 
-newRouter.post("/new", (req, res) => {
+newRouter.post("/new", async (req, res) => {
   const { author, message } = req.body;
   if (author && message) {
-    req.messages.push({
-      text: message,
-      user: author,
-      added: new Date(),
-    });
+    await db.insertMessage( message, author )
     res.redirect("/");
   } else {
     res.status(400).send("Both fields are required!")

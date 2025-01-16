@@ -27,7 +27,7 @@ app.use(async (req, res, next) => {
 app.use("/", indexRouter);
 app.use("/", newRouter);
 
-const PORT = process.env.PORT
-app.listen(PORT, '0.0.0.0', () => {
+const PORT = process.env.PORT || 3000; // Use Railway's PORT or fallback to 3000 locally
+app.listen(PORT, () => {
   console.log(`My first Express app - listening on port ${PORT}!`);
 });

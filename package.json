@@ -6,6 +6,6 @@
     "pg": "^8.13.1"
   },
   "scripts": {
-    "start": "node app.js"
+    "start": "node ./data/populatedb.js && node app.js"
   }
 }

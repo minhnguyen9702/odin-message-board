@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { Client } = require("pg");
 
 const dbUrl =
@@ -10,8 +11,9 @@ CREATE TABLE IF NOT EXISTS messages (
     text TEXT NOT NULL,
     user_name TEXT NOT NULL,
     added TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+);`;
 
+const insertMessages = `
 INSERT INTO messages (text, user_name, added) 
 VALUES 
   ('Hi there!', 'Amando', NOW()),
@@ -23,10 +25,25 @@ async function main() {
   const client = new Client({
     connectionString: dbUrl,
   });
-  await client.connect();
-  await client.query(SQL);
-  await client.end();
-  console.log("done");
+  
+  try {
+    await client.connect();
+    await client.query(SQL);  // Create table if it doesn't exist
+    const result = await client.query('SELECT COUNT(*) FROM messages');  // Check if the table has any rows
+    const count = parseInt(result.rows[0].count, 10);  // Ensure count is an integer
+    
+    if (count === 0) {
+      console.log('Inserting default values...');
+      await client.query(insertMessages);  // Insert default values
+    } else {
+      console.log('Table already contains data. Skipping insertion.');
+    }
+  } catch (error) {
+    console.error('Error during seeding:', error);
+  } finally {
+    await client.end();
+    console.log("done");
+  }
 }
 
 main();
